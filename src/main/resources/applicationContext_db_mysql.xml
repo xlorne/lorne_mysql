@@ -69,7 +69,6 @@
             <list>
                 <value>com.*.service.*</value>
                 <value>com.*.dao.*</value>
-                <value>com.*.jgdao.*</value>
             </list>
         </property>
     </bean>
@@ -94,7 +93,7 @@
             <tx:method name="load*" read-only="true"/>
             <tx:method name="query*" read-only="true"/>
             <tx:method name="select*" read-only="true"/>
-            <tx:method name="*" rollback-for="com.baichang.framework.excelption.BCException"/>
+            <tx:method name="*" rollback-for="com.lorne.core.framework.exception.LEException"/>
         </tx:attributes>
     </tx:advice>
 
