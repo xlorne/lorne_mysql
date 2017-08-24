@@ -10,6 +10,7 @@ import net.sf.jsqlparser.JSQLParserException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.RowProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -57,14 +58,11 @@ public class BaseJdbcTemplate<T extends BaseEntity> {
 
     private String updateSql;
 
-    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplateProxy jdbcTemplateProxy;
 
     public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
-
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        return jdbcTemplateProxy.getJdbcTemplate();
     }
 
     public Class<?> getClazz() {
