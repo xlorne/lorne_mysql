@@ -1,11 +1,12 @@
 package com.lorne.mysql.framework.dao.impl;
 
 
-import com.lorne.core.framework.annotation.db.*;
+
 import com.lorne.core.framework.model.BaseEntity;
 import com.lorne.core.framework.model.Page;
 import com.lorne.mysql.framework.utils.SelectCountUtils;
 import com.lorne.mysql.framework.utils.SelectLimitUtils;
+
 import net.sf.jsqlparser.JSQLParserException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.dbutils.BasicRowProcessor;
@@ -18,6 +19,8 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+
+import javax.persistence.*;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -79,7 +82,6 @@ public class BaseJdbcTemplate<T extends BaseEntity> {
 
         this.clazz = (Class<?>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
-
 
         className = this.clazz.getSimpleName();
 
@@ -204,7 +206,7 @@ public class BaseJdbcTemplate<T extends BaseEntity> {
                      */
                     Column column = gmethod.getAnnotation(Column.class);
 
-                    Generator generator = gmethod.getAnnotation(Generator.class);
+                    GeneratedValue generator = gmethod.getAnnotation(GeneratedValue.class);
 
                     if (generator != null) {
                         generatorProperty = propertyDescriptor.getName();
