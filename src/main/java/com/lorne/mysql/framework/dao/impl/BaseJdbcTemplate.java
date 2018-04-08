@@ -11,6 +11,7 @@ import net.sf.jsqlparser.JSQLParserException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.RowProcessor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -159,7 +160,7 @@ public class BaseJdbcTemplate<T extends BaseEntity> {
 
     private Map<String, String> getColumnToPropertyOverrides() {
         Map<String, String> maps = new HashMap<String, String>();
-        PropertyDescriptor[] propertyDescriptors = new PropertyDescriptor[0];
+        PropertyDescriptor[] propertyDescriptors;
         try {
             propertyDescriptors = propertyDescriptors(clazz);
             for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
@@ -170,7 +171,7 @@ public class BaseJdbcTemplate<T extends BaseEntity> {
                      */
                     Column column = gmethod.getAnnotation(Column.class);
                     String columnName = "";
-                    if (column == null) {
+                    if (column == null||StringUtils.isEmpty(column.name())) {
                         columnName = propertyToColumn(propertyDescriptor.getName());
                     } else {
                         columnName = column.name();
@@ -198,8 +199,9 @@ public class BaseJdbcTemplate<T extends BaseEntity> {
                      * 忽略字段
                      */
                     Transient aTransient = gmethod.getAnnotation(Transient.class);
-                    if (aTransient != null)
+                    if (aTransient != null) {
                         continue;
+                    }
 
                     /**
                      * 反射字段名称
@@ -212,7 +214,7 @@ public class BaseJdbcTemplate<T extends BaseEntity> {
                         generatorProperty = propertyDescriptor.getName();
                     }
                     String columnName;
-                    if (column == null) {
+                    if (column == null||StringUtils.isEmpty(column.name())) {
                         columnName = propertyToColumn(propertyDescriptor.getName());
                     } else {
                         columnName = column.name();
